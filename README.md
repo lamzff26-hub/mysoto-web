@@ -1,58 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🛒 Kasentra
 
-## About Laravel
+### Sistem Point of Sale (POS) / Kasir untuk Toko Ritel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aplikasi web kasir yang **cepat di meja kasir, mudah dipahami pemilik toko, dan menghasilkan laporan tanpa hitung manual.** Dibuat untuk warung, toko kelontong, kedai, dan butik skala kecil–menengah.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)](https://php.net)
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Filament](https://img.shields.io/badge/Filament-4-FDAE4B?logo=laravel&logoColor=white)](https://filamentphp.com)
+[![Livewire](https://img.shields.io/badge/Livewire-3-FB70A9?logo=livewire&logoColor=white)](https://livewire.laravel.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E.svg)](LICENSE)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+</div>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Sorotan Fitur
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Kasentra punya **dua wajah**: panel admin yang lengkap untuk pemilik toko, dan halaman kasir yang ringan & real-time untuk transaksi cepat.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 🧑‍💼 Untuk Admin / Pemilik
+- **Dashboard ringkas** — omzet hari ini, jumlah transaksi, dan produk terlaris dalam sekejap.
+- **Manajemen Produk** — CRUD lengkap (nama, SKU, kategori, harga, stok, foto), indikator **stok menipis**, pencarian & filter.
+- **Manajemen Kategori** & **Manajemen Pengguna** (buat/edit/nonaktifkan akun kasir).
+- **Laporan Penjualan** per rentang tanggal — omzet, jumlah transaksi, produk terlaris.
+- **Ekspor Excel** profesional (`.xlsx`) berisi 4 sheet + **grafik** (pie metode bayar, line tren harian, bar produk terlaris).
+- **Pengaturan Toko** — unggah gambar QRIS tanpa menyentuh kode.
 
-## Agentic Development
+### 🧾 Untuk Kasir
+- **Halaman kasir real-time** (Livewire) — pencarian produk cepat, klik untuk tambah ke keranjang.
+- Atur qty, hapus item, **total & kembalian terhitung otomatis**.
+- Metode pembayaran: **Tunai / QRIS / Transfer**.
+- Selesaikan transaksi → **stok berkurang otomatis**, nomor invoice unik dibuat, keranjang reset.
+- **Cetak struk PDF** (80mm, format kertas termal) — bisa di-print atau di-download.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## 🔐 Keamanan Bawaan
+
+Kasentra dibangun dengan praktik keamanan sejak awal:
+
+- **Role-based access** — Admin & Kasir punya akses berbeda; panel admin hanya untuk Admin aktif (`canAccessPanel`).
+- **Rate limiting login** (5 percobaan / email+IP) + regenerasi sesi (anti session-fixation) + pesan error generik (anti user-enumeration).
+- **Anti-IDOR** pada struk — hanya admin atau kasir pemilik transaksi yang bisa melihatnya.
+- **Validasi upload** ketat (hanya `jpeg/png/webp`, batas ukuran) — menutup celah SVG-XSS.
+- **Snapshot harga & nama produk** di setiap item transaksi → riwayat tetap akurat meski harga diubah.
+
+---
+
+## 🧰 Tech Stack
+
+| Lapisan | Teknologi |
+|---------|-----------|
+| Backend | **Laravel 13** (PHP 8.3) |
+| Panel Admin | **Filament 4** |
+| Halaman Kasir & Login | **Livewire 3** |
+| Styling | **Tailwind CSS 4** + Vite |
+| Database | **MySQL** |
+| Laporan Excel | **PhpSpreadsheet** |
+| Struk PDF | **barryvdh/laravel-dompdf** |
+| Animasi landing | GSAP · Three.js · Lottie |
+
+---
+
+## 🚀 Instalasi Lokal
+
+### Prasyarat
+- PHP **8.3+** (dengan ekstensi `zip`, `gd`)
+- Composer
+- Node.js & npm
+- MySQL (mis. via [Laragon](https://laragon.org/) / XAMPP)
+
+### Langkah
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone repository
+git clone https://github.com/Aditiya-16/kasentra.git
+cd kasentra
 
-php artisan boost:install
+# 2. Install dependency PHP & JS
+composer install
+npm install
+
+# 3. Siapkan environment
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Edit `.env` dan sesuaikan koneksi database:
 
-## Contributing
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kasentra
+DB_USERNAME=root
+DB_PASSWORD=
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# (opsional) password akun awal — kosongkan untuk pakai default dev
+SEED_ADMIN_PASSWORD=
+SEED_KASIR_PASSWORD=
+```
 
-## Code of Conduct
+```bash
+# 4. Migrasi + isi data awal
+php artisan migrate --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 5. Symlink storage (agar gambar QRIS & produk tampil)
+php artisan storage:link
 
-## Security Vulnerabilities
+# 6. Build asset & jalankan
+npm run build
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Buka **http://localhost:8000** 🎉
 
-## License
+> 💡 Untuk mode pengembangan dengan hot-reload, jalankan `composer dev` (menjalankan server, queue, dan Vite sekaligus).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🔑 Akun Demo (hasil seeder)
+
+| Peran | Email | Password |
+|-------|-------|----------|
+| Admin | `admin@kasentra.test` | `password` |
+| Kasir | `kasir@kasentra.test` | `password` |
+
+- **Admin** masuk ke panel `/admin`.
+- **Kasir** masuk ke halaman `/kasir`.
+
+> ⚠️ **Ganti password ini sebelum deploy ke produksi.** Seeder otomatis **menolak** password default di environment produksi — set `SEED_ADMIN_PASSWORD` & `SEED_KASIR_PASSWORD` di `.env`.
+
+---
+
+## 🗺️ Rute Utama
+
+| Rute | Akses | Keterangan |
+|------|-------|-----------|
+| `/` | Publik | Landing page |
+| `/login` | Tamu | Halaman login |
+| `/kasir` | Terautentikasi | Halaman kasir (Livewire) |
+| `/admin` | Admin aktif | Panel Filament |
+| `/struk/{transaction}` | Admin / pemilik transaksi | Struk PDF |
+
+---
+
+## 🗄️ Model Data
+
+```
+users ──< transactions ──< transaction_items >── products >── categories
+```
+
+- **transaction_items** menyimpan *snapshot* `product_name` & `price` agar riwayat tetap akurat meski produk berubah.
+- **settings** menyimpan konfigurasi toko (mis. gambar QRIS) sebagai key–value.
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dirilis di bawah lisensi [MIT](LICENSE).
+
+<div align="center">
+
+Dibuat dengan ❤️ menggunakan Laravel & Filament
+
+</div>
