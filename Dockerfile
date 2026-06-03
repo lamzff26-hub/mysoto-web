@@ -16,7 +16,10 @@ RUN npm run build
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction
+# --ignore-platform-reqs: image composer ini tak punya ext-intl/ext-gd, tapi
+# kita hanya MENGUNDUH paket di sini. Ekstensi sebenarnya tersedia di image
+# runtime (stage berikutnya), jadi cek platform di sini aman diabaikan.
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction --ignore-platform-reqs
 
 # ============================================================
 # Stage 3 — Runtime (nginx + php-fpm)
@@ -30,7 +33,7 @@ RUN apk add --no-cache \
         nginx gettext \
         libzip-dev libpng-dev freetype-dev libjpeg-turbo-dev icu-dev oniguruma-dev \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install -j"$(nproc)" pdo_mysql zip gd bcmath intl opcache \
+ && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring zip gd bcmath intl opcache \
  && rm -rf /var/cache/apk/*
 
 # Composer binary (untuk dump-autoload final)
