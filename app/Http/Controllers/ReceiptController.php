@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -24,9 +25,28 @@ class ReceiptController extends Controller
 
         $transaction->load(['items', 'user']);
 
-        $pdf = Pdf::loadView('receipt', ['trx' => $transaction])
-            // Lebar 80mm (kertas struk termal); tinggi dibuat longgar.
-            ->setPaper([0, 0, 226.77, 650]);
+        // Gunakan query parameter jika ada, kalau tidak gunakan setting default
+        $size = (int) $request->query('size', 0);
+        if ($size === 0) {
+            $size = (int) Setting::get('receipt_size', 80);
+        }
+        if (! in_array($size, [58, 80], true)) {
+            $size = 80;
+        }
+
+        $paperWidths = [
+            58 => 164.57, // 58mm in points
+            80 => 226.77, // 80mm in points
+        ];
+
+        $pdf = Pdf::loadView('receipt', [
+                'trx' => $transaction,
+                'pageWidthMm' => $size,
+                'storeName' => Setting::get('store_name', 'MySoto'),
+                'storeAddress' => Setting::get('store_address', 'Alamat toko belum disetel'),
+                'storeLogo' => Setting::get('store_logo'),
+            ])
+            ->setPaper([0, 0, $paperWidths[$size], 650]);
 
         $filename = $transaction->invoice_number . '.pdf';
 

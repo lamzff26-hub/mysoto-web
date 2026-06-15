@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     {{-- CSS inline: dompdf tidak memproses Tailwind/Vite, jadi gaya ditulis langsung. --}}
     <style>
+        @page { size: {{ $pageWidthMm }}mm auto; margin: 0; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'DejaVu Sans', sans-serif;
@@ -27,10 +28,16 @@
     </style>
 </head>
 <body>
-    {{-- Kepala struk: nama toko + info transaksi --}}
+    {{-- Kepala struk: logo toko + nama/alamat --}}
+    @if (! empty($storeLogo))
+        <div class="center" style="margin-bottom: 6px;">
+            <img src="{{ asset('storage/' . ltrim($storeLogo, '/')) }}" alt="Logo Toko" style="max-width: 120px; max-height: 48px; object-fit: contain; display: inline-block;" />
+        </div>
+    @endif
+
     <div class="center">
-        <div class="store">KASENTRA</div>
-        <div class="muted">Sistem POS Toko Ritel</div>
+        <div class="store">{{ $storeName }}</div>
+        <div class="muted">{{ $storeAddress }}</div>
     </div>
 
     <hr>

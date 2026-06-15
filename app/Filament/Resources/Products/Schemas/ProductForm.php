@@ -60,6 +60,7 @@ class ProductForm
                 FileUpload::make('image')
                     ->label('Foto Produk')
                     ->image()
+                    ->disk('public')
                     // Batasi ke raster aman; tolak SVG (bisa menyimpan skrip → XSS).
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->imageEditor()

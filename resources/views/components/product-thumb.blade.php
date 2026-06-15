@@ -45,7 +45,34 @@
         default => mb_strtoupper(mb_substr($parts[0], 0, 1) . mb_substr(end($parts), 0, 1)),
     };
 
-    $url = $image ? Storage::disk('public')->url($image) : null;
+    $url = null;
+    if ($image) {
+        $imagePath = trim((string) $image);
+
+        if (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://')) {
+            $url = $imagePath;
+        } else {
+            $imagePath = ltrim($imagePath, '/');
+
+            if (str_starts_with($imagePath, 'storage/')) {
+                $imagePath = substr($imagePath, 8);
+            }
+
+            if (str_starts_with($imagePath, 'public/storage/')) {
+                $imagePath = substr($imagePath, 15);
+            }
+
+            if (str_starts_with($imagePath, 'public/')) {
+                $imagePath = substr($imagePath, 7);
+            }
+
+            if (Storage::disk('public')->exists($imagePath)) {
+                $url = Storage::disk('public')->url($imagePath);
+            } else {
+                $url = asset('storage/' . $imagePath);
+            }
+        }
+    }
 @endphp
 
 @if ($url)

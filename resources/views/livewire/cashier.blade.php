@@ -6,15 +6,14 @@
 <div class="min-h-screen">
     {{-- ===================== TOP BAR ===================== --}}
     <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-white/10 dark:bg-ink-950/80">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-            <div class="flex items-center gap-2 font-bold">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap items-center gap-2 font-bold">
                 {{-- Light mode: logo gelap; dark mode: logo terang (.dark di <html>). --}}
-                <img src="{{ asset('images/logo.svg') }}" alt="Kasentra" class="h-9 w-auto dark:hidden">
-                <img src="{{ asset('images/logo-dark.svg') }}" alt="Kasentra" class="hidden h-9 w-auto dark:block">
-                <span class="font-normal text-slate-400">· Kasir</span>
-            </div>
-            <div class="flex items-center gap-3 text-sm">
-                <span class="hidden text-slate-500 sm:block dark:text-slate-400">
+                <img src="{{ asset('images/logo.svg') }}" alt="MySoto" class="h-9 w-auto dark:hidden">
+                <img src="{{ asset('images/logo-dark.svg') }}" alt="MySoto" class="hidden h-9 w-auto dark:block">
+            
+            <div class="flex flex-wrap items-center gap-3 text-sm justify-end">
+                <span class="text-slate-500 dark:text-slate-400">
                     {{ auth()->user()->name }}
                 </span>
                 @if (auth()->user()->isAdmin())
@@ -26,9 +25,10 @@
                 </form>
             </div>
         </div>
+     </div>
     </header>
 
-    <div class="mx-auto grid max-w-7xl gap-5 px-4 py-5 lg:grid-cols-5">
+    <div x-data="{ cartOpen: {{ count($cart) ? 'true' : 'false' }} }" class="mx-auto grid max-w-7xl gap-5 px-4 py-5 lg:grid-cols-5">
         {{-- ===================== KIRI: PRODUK ===================== --}}
         <section class="lg:col-span-3">
             {{-- Pencarian cepat (live, debounce agar tidak membebani server) --}}
@@ -44,7 +44,7 @@
             </div>
 
             {{-- Grid produk --}}
-            <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+            <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 @forelse ($this->products as $product)
                     @php $isOut = $product->stock < 1; @endphp
                     <button
@@ -87,24 +87,29 @@
         </section>
 
         {{-- ===================== KANAN: KERANJANG ===================== --}}
-        <aside class="lg:col-span-2">
-            <div class="card sticky top-20 p-0">
-                <div class="flex items-center justify-between border-b border-slate-100 p-4 dark:border-white/10">
-                    <h2 class="flex items-center gap-2 font-semibold text-slate-800 dark:text-white">
+        @if (count($cart))
+            <aside x-show="cartOpen" x-cloak class="lg:col-span-2">
+                <div class="card lg:sticky lg:top-20 p-0">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-4 dark:border-white/10">
+                    <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-white">
                         🛒 Keranjang
                         @if (count($cart))
                             <span class="badge bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">{{ count($cart) }}</span>
                         @endif
-                    </h2>
-                    @if (count($cart))
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" @click="cartOpen = !cartOpen" class="btn-ghost px-3 py-1.5 text-sm lg:hidden">
+                            <span x-text="cartOpen ? 'Sembunyikan' : 'Buka'"></span>
+                        </button>
                         <button wire:click="clearCart" class="text-sm text-slate-400 transition hover:text-red-500">Kosongkan</button>
-                    @endif
+                    </div>
                 </div>
 
-                {{-- Daftar item --}}
-                <div class="max-h-[40vh] overflow-y-auto p-4">
+                <div x-show="cartOpen" x-cloak class="space-y-0">
+                    {{-- Daftar item --}}
+                    <div class="max-h-[40vh] overflow-y-auto p-4">
                     @forelse ($cart as $id => $item)
-                        <div wire:key="cart-{{ $id }}" class="cart-row mb-2 flex items-center gap-3 rounded-xl bg-slate-50 p-2.5 dark:bg-white/5">
+                        <div wire:key="cart-{{ $id }}" class="cart-row mb-2 flex flex-col gap-3 rounded-xl bg-slate-50 p-2.5 dark:bg-white/5 sm:flex-row sm:items-center">
                             <div class="h-10 w-10 shrink-0">
                                 <x-product-thumb
                                     :id="$id"
@@ -126,9 +131,9 @@
                                 <button wire:click="incrementQty({{ $id }})" @disabled($item['qty'] >= $item['stock']) class="grid h-7 w-7 place-items-center rounded-lg bg-white text-slate-600 ring-1 ring-slate-200 transition hover:bg-slate-100 disabled:opacity-40 dark:bg-white/10 dark:text-slate-200 dark:ring-white/10">+</button>
                             </div>
 
-                            <div class="w-20 text-right text-sm font-semibold text-slate-800 dark:text-white">{{ $rp($item['price'] * $item['qty']) }}</div>
+                            <div class="w-full text-right text-sm font-semibold text-slate-800 dark:text-white sm:w-20">{{ $rp($item['price'] * $item['qty']) }}</div>
 
-                            <button wire:click="removeItem({{ $id }})" class="text-slate-300 transition hover:text-red-500" aria-label="Hapus">
+                            <button wire:click="removeItem({{ $id }})" class="self-end text-slate-300 transition hover:text-red-500 sm:self-auto" aria-label="Hapus">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>
@@ -153,10 +158,10 @@
                     {{-- Metode pembayaran --}}
                     <div>
                         <label class="label">Metode Pembayaran</label>
-                        <div class="grid grid-cols-3 gap-2">
+                        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
                             @foreach (\App\Enums\PaymentMethod::cases() as $pm)
                                 <button type="button" wire:click="$set('paymentMethod', '{{ $pm->value }}')"
-                                    class="btn px-2 py-2 text-xs ring-1 transition
+                                    class="btn w-full px-3 py-2 text-sm ring-1 transition
                                         {{ $paymentMethod === $pm->value
                                             ? 'bg-brand-500 text-white ring-brand-500'
                                             : 'bg-white text-slate-600 ring-slate-200 hover:bg-slate-50 dark:bg-white/5 dark:text-slate-300 dark:ring-white/10' }}">
@@ -174,11 +179,11 @@
                                 class="input text-right text-lg font-semibold">
                             @error('paid') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
 
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                <button wire:click="exactCash" class="btn-ghost px-3 py-1 text-xs">Uang Pas</button>
-                                <button wire:click="quickCash(20000)" class="btn-ghost px-3 py-1 text-xs">+20rb</button>
-                                <button wire:click="quickCash(50000)" class="btn-ghost px-3 py-1 text-xs">+50rb</button>
-                                <button wire:click="quickCash(100000)" class="btn-ghost px-3 py-1 text-xs">+100rb</button>
+                            <div class="mt-2 grid grid-cols-2 gap-2">
+                                <button wire:click="exactCash" class="btn-ghost w-full px-3 py-2 text-sm">Uang Pas</button>
+                                <button wire:click="quickCash(20000)" class="btn-ghost w-full px-3 py-2 text-sm">+20rb</button>
+                                <button wire:click="quickCash(50000)" class="btn-ghost w-full px-3 py-2 text-sm">+50rb</button>
+                                <button wire:click="quickCash(100000)" class="btn-ghost w-full px-3 py-2 text-sm">+100rb</button>
                             </div>
                         </div>
 
@@ -226,7 +231,15 @@
                     </button>
                 </div>
             </div>
-        </aside>
+            </aside>
+
+            <div x-show="!cartOpen" x-cloak class="fixed inset-x-0 bottom-0 z-40 px-4 pb-4 lg:hidden">
+                <button type="button" @click="cartOpen = true"
+                    class="btn-primary w-full rounded-2xl py-3 text-base shadow-xl shadow-slate-900/10">
+                    Keranjang ({{ count($cart) }})
+                </button>
+            </div>
+        @endif
     </div>
 
     {{-- ===================== OVERLAY SUKSES (Lottie) ===================== --}}
@@ -261,13 +274,13 @@
                 </div>
             @endif
 
-            <div class="mt-5 flex gap-2">
+            <div class="mt-5 grid gap-2 sm:grid-cols-2">
                 @if ($lastTransaction)
                     {{-- Buka struk PDF di tab baru (bisa langsung di-print dari browser). --}}
-                    <a href="{{ route('receipt', $lastTransaction['id']) }}" target="_blank"
-                        class="btn-ghost flex-1 py-2.5">🧾 Cetak Struk</a>
+                    <a href="{{ route('receipt', ['transaction' => $lastTransaction['id']]) }}" target="_blank"
+                        class="btn-ghost py-2.5">🧾 Cetak Struk</a>
                 @endif
-                <button wire:click="newTransaction" class="btn-primary flex-1 py-2.5">Transaksi Baru</button>
+                <button wire:click="newTransaction" class="btn-primary py-2.5">Transaksi Baru</button>
             </div>
         </div>
     </div>

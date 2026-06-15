@@ -18,7 +18,7 @@
                 </p>
             </div>
 
-            <p class="text-sm text-white/50">© {{ date('Y') }} aditiya-16 · Kasentra</p>
+            <p class="text-sm text-white/50">© {{ date('Y') }} aditiya-16 · MySoto</p>
         </div>
     </div>
 
@@ -27,8 +27,8 @@
         <div class="w-full max-w-sm">
             {{-- Logo untuk layar kecil: ikut tema (light/dark) halaman. --}}
             <a href="/" class="mb-8 inline-flex items-center lg:hidden">
-                <img src="{{ asset('images/logo.svg') }}" alt="Kasentra" class="h-9 w-auto dark:hidden">
-                <img src="{{ asset('images/logo-dark.svg') }}" alt="Kasentra" class="hidden h-9 w-auto dark:block">
+                <img src="{{ asset('images/logo.svg') }}" alt="MySoto" class="h-9 w-auto dark:hidden">
+                <img src="{{ asset('images/logo-dark.svg') }}" alt="MySoto" class="hidden h-9 w-auto dark:block">
             </a>
 
             <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Masuk ke akun Anda</h2>

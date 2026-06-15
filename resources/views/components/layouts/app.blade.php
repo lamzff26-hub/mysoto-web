@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Kasir' }} · Kasentra</title>
+    <title>{{ $title ?? 'Kasir' }} - MySoto</title>
 
-    {{-- Favicon Kasentra --}}
+    {{-- Favicon MySoto --}}
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/logo-icon.png') }}">
 

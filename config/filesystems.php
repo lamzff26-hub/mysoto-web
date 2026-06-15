@@ -36,6 +36,7 @@ return [
             'serve' => true,
             'throw' => false,
             'report' => false,
+            'url' => '/storage/app/private',
         ],
 
         'public' => [
@@ -78,6 +79,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('storage/app') => storage_path('app'),
     ],
 
 ];

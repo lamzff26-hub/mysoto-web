@@ -31,14 +31,14 @@ class AdminPanelProvider extends PanelProvider
             // Sengaja TANPA ->login(): kita pakai satu halaman login elegan
             // di /login. Tamu yang membuka /admin akan diarahkan ke sana
             // oleh middleware Authenticate (lihat redirect ke route 'login').
-            ->brandName('Kasentra')
-            // Logo Kasentra di sidebar/topbar panel + favicon tab browser.
+            ->brandName('MySoto')
+            // Logo MySoto di sidebar/topbar panel + favicon tab browser.
             // Filament menukar otomatis berdasarkan tema panel (kelas .fi-logo-light/dark).
             ->brandLogo(fn () => asset('images/logo.svg'))
             ->darkModeBrandLogo(fn () => asset('images/logo-dark.svg'))
             ->brandLogoHeight('2.25rem')
             ->favicon(asset('images/logo-icon.png'))
-            // Selaras palet Kasentra: primary = teal (brand), abu-abu = slate.
+            // Selaras palet MySoto: primary = teal (brand), abu-abu = slate.
             ->colors([
                 'primary' => Color::Teal,
                 'gray' => Color::Slate,

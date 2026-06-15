@@ -11,10 +11,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kasentra — POS Kasir Modern untuk Toko Anda</title>
-    <meta name="description" content="Kasentra: aplikasi kasir cepat & ringan. Catat produk, proses transaksi di bawah 30 detik, lihat laporan otomatis.">
+    <title>MySoto — POS Kasir Modern untuk Toko Anda</title>
+    <meta name="description" content="MySoto: aplikasi kasir cepat & ringan. Catat produk, proses transaksi di bawah 30 detik, lihat laporan otomatis.">
 
-    {{-- Favicon Kasentra --}}
+    {{-- Favicon MySoto --}}
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/logo-icon.png') }}">
 
@@ -34,8 +34,8 @@
     <header class="fixed inset-x-0 top-0 z-50 backdrop-blur-md">
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <a href="/" class="flex items-center">
-                <img src="{{ asset('images/logo.svg') }}" alt="Kasentra" class="h-9 w-auto dark:hidden">
-                <img src="{{ asset('images/logo-dark.svg') }}" alt="Kasentra" class="hidden h-9 w-auto dark:block">
+                <img src="{{ asset('images/logo.svg') }}" alt="MySoto" class="h-9 w-auto dark:hidden">
+                <img src="{{ asset('images/logo-dark.svg') }}" alt="MySoto" class="hidden h-9 w-auto dark:block">
             </a>
 
             <div class="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex dark:text-slate-300">
@@ -82,7 +82,7 @@
                     laporan yang <span class="text-gradient">otomatis</span>.
                 </h1>
                 <p class="mt-6 max-w-lg text-lg text-slate-600 dark:text-slate-300">
-                    Kasentra membantu pemilik toko dan kasir memproses transaksi di bawah
+                    MySoto membantu pemilik toko dan kasir memproses transaksi di bawah
                     30 detik, mengurangi stok otomatis, dan melihat omzet harian tanpa
                     hitung manual.
                 </p>
@@ -171,10 +171,10 @@
         <div data-reveal class="card relative overflow-hidden bg-gradient-to-br from-brand-500 to-ink-600 p-12 text-center text-white ring-0 sm:p-16">
             <h2 class="text-3xl font-bold sm:text-4xl">Siap mempercepat kasir toko Anda?</h2>
             <p class="mx-auto mt-4 max-w-xl text-white/85">
-                Mulai gunakan Kasentra hari ini. Intuitif, cepat, dan tanpa pelatihan khusus.
+                Mulai gunakan MySoto hari ini. Intuitif, cepat, dan tanpa pelatihan khusus.
             </p>
             <a href="{{ $appTarget }}" class="btn mt-8 bg-white px-7 py-3 text-base font-semibold text-brand-700 hover:-translate-y-0.5 hover:bg-slate-50">
-                {{ auth()->check() ? 'Buka Aplikasi' : 'Masuk ke Kasentra' }}
+                {{ auth()->check() ? 'Buka Aplikasi' : 'Masuk ke MySoto' }}
             </a>
         </div>
     </section>
@@ -183,10 +183,10 @@
     <footer class="border-t border-slate-200 py-10 dark:border-white/10">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-500 sm:flex-row dark:text-slate-400">
             <div class="flex items-center">
-                <img src="{{ asset('images/logo.svg') }}" alt="Kasentra" class="h-8 w-auto dark:hidden">
-                <img src="{{ asset('images/logo-dark.svg') }}" alt="Kasentra" class="hidden h-8 w-auto dark:block">
+                <img src="{{ asset('images/logo.svg') }}" alt="MySoto" class="h-8 w-auto dark:hidden">
+                <img src="{{ asset('images/logo-dark.svg') }}" alt="MySoto" class="hidden h-8 w-auto dark:block">
             </div>
-            <p>© {{ date('Y') }} aditiya-16 · Kasentra. Sistem POS untuk toko ritel.</p>
+            <p>© {{ date('Y') }} LamzDev · MySoto. Sistem POS untuk toko ritel.</p>
         </div>
     </footer>
 

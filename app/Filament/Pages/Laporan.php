@@ -123,7 +123,7 @@ class Laporan extends Page
         // ---------- Bangun workbook ----------
         $ss = new Spreadsheet();
         $ss->getProperties()
-            ->setCreator('Kasentra POS')
+            ->setCreator('MySoto POS')
             ->setTitle("Laporan Penjualan {$this->dari} s/d {$this->sampai}");
 
         $this->buildRingkasan($ss->getActiveSheet(), $omzet, $jumlah, $rata, $totalItem, $byMethod);
@@ -160,7 +160,7 @@ class Laporan extends Page
         $s->setTitle('Ringkasan');
 
         // Judul.
-        $s->setCellValue('A1', 'LAPORAN PENJUALAN — KASENTRA');
+        $s->setCellValue('A1', 'LAPORAN PENJUALAN — MYSOTO');
         $s->mergeCells('A1:C1');
         $s->getStyle('A1')->getFont()->setBold(true)->setSize(15)->getColor()->setRGB(self::BRAND);
 

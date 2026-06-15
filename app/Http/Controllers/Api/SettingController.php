@@ -36,7 +36,7 @@ class SettingController extends Controller
         ]);
 
         if (array_key_exists('store_name', $data)) {
-            Setting::set('store_name', $data['store_name'] ?? 'Kasentra');
+            Setting::set('store_name', $data['store_name'] ?? 'MySoto');
         }
 
         if ($request->hasFile('qris_image')) {
@@ -65,7 +65,7 @@ class SettingController extends Controller
         $qris = Setting::get('qris_image');
 
         return [
-            'store_name' => Setting::get('store_name', 'Kasentra'),
+            'store_name' => Setting::get('store_name', 'MySoto'),
             'qris_image_url' => $qris ? Storage::disk('public')->url($qris) : null,
         ];
     }

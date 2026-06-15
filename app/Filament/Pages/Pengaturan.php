@@ -6,7 +6,7 @@ use App\Models\Setting;
 use App\Models\User;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
@@ -43,7 +43,9 @@ class Pengaturan extends Page
     public function mount(): void
     {
         $this->form->fill([
-            'store_name' => Setting::get('store_name', 'Kasentra'),
+            'store_name' => Setting::get('store_name', 'MySoto'),
+            'store_address' => Setting::get('store_address', 'Alamat toko belum disetel'),
+            'store_logo' => Setting::get('store_logo'),
             'qris_image' => Setting::get('qris_image'),
         ]);
     }
@@ -57,6 +59,19 @@ class Pengaturan extends Page
                         TextInput::make('store_name')
                             ->label('Nama Toko')
                             ->maxLength(255),
+                        TextInput::make('store_address')
+                            ->label('Alamat Toko')
+                            ->maxLength(512)
+                            ->helperText('Alamat ini tampil di struk dan laporan toko.'),
+                        FileUpload::make('store_logo')
+                            ->label('Logo Toko (opsional)')
+                            ->image()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->directory('settings')
+                            ->disk('public')
+                            ->imagePreviewHeight('120')
+                            ->helperText('Logo akan tampil di bagian atas struk jika diunggah.')
+                            ->maxSize(4096),
                     ]),
 
                 Section::make('Pembayaran QRIS')
@@ -80,7 +95,9 @@ class Pengaturan extends Page
     {
         $data = $this->form->getState();
 
-        Setting::set('store_name', $data['store_name'] ?? 'Kasentra');
+        Setting::set('store_name', $data['store_name'] ?? 'MySoto');
+        Setting::set('store_address', $data['store_address'] ?? null);
+        Setting::set('store_logo', $data['store_logo'] ?? null);
         Setting::set('qris_image', $data['qris_image'] ?? null);
 
         Notification::make()
@@ -88,4 +105,10 @@ class Pengaturan extends Page
             ->success()
             ->send();
     }
+
+    public function receiptSize()
+    {
+        return (int) Setting::get('receipt_size', 80);
+    }
 }
+
