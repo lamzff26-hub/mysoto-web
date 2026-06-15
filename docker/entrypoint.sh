@@ -46,7 +46,9 @@ php artisan config:cache || true       # cache config (route:cache TIDAK dipakai
 php artisan view:cache || true
 
 # php-fpm di background, nginx di foreground (proses utama container).
+# Start php-fpm daemon dan berikan waktu untuk initialize
 php-fpm -D
+sleep 1
 
 # Verify nginx config is valid before starting
 nginx -t || (echo "Nginx config error!" && exit 1)
