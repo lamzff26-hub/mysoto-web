@@ -33,7 +33,18 @@ EOF
 fi
 
 # Setup Laravel saat boot.
-php artisan storage:link || true       # symlink public/storage -> storage/app/public
+# Remove existing storage symlink if it's broken or circular
+if [ -L /var/www/html/public/storage ]; then
+    if ! [ -d /var/www/html/public/storage ]; then
+        rm -f /var/www/html/public/storage
+    fi
+fi
+
+# Create storage symlink dengan path absolut (hindari circular reference)
+if [ ! -L /var/www/html/public/storage ]; then
+    ln -s /var/www/html/storage/app/public /var/www/html/public/storage || true
+fi
+
 php artisan migrate --force || true    # jalankan migrasi yang tertunda (idempotent)
 
 # Isi data awal HANYA bila RUN_SEED=true (set sekali saat deploy pertama,
